@@ -1,0 +1,13 @@
+FROM gcr.io/tfx-oss-public/tfx:1.9.1
+
+ENV GOOGLE_APPLICATION_CREDENTIALS=sfeir-data-394b11f86ed4.json
+
+COPY src/monitorer_component monitorer_component
+COPY secrets/$GOOGLE_APPLICATION_CREDENTIALS $GOOGLE_APPLICATION_CREDENTIALS
+
+RUN gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+
+RUN pip3 install --no-cache --upgrade pip setuptools
+RUN pip3 install google-cloud-aiplatform==1.17.1
+
+ENV PYTHONPATH="/tfx/src:${PYTHONPATH}"
