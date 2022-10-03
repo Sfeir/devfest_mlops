@@ -6,6 +6,7 @@ logs/
 
 # Mac
 .DS_Store
+.Trash-0
 
 # Python
 __pycache__/
@@ -16,3 +17,11 @@ dist/
 
 # Jupyter notebook
 */.ipynb_checkpoints/
+/notebooks_dev
+/notebooks
+
+# Secrets
+/secrets
+
+#
+.pre-commit-config.yaml

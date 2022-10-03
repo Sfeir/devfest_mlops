@@ -9,7 +9,6 @@ RUN mkdir devfest_mlops
 RUN pip install --upgrade pip
 RUN pip install jupyter
 RUN pip install --upgrade "tfx[kfp]<2"
-RUN pip install click
 
 EXPOSE 8888
 
