@@ -1,5 +1,6 @@
 import json
 import os
+from absl import logging
 from typing import Any, Dict, List
 
 from tfx import types
@@ -15,7 +16,6 @@ class Executor(base_executor.BaseExecutor):
     def Do(self, input_dict: Dict[str, List[types.Artifact]],
            output_dict: Dict[str, List[types.Artifact]],
            exec_properties: Dict[str, Any]) -> None:
-        ...
 
         from google.cloud import aiplatform
         import tensorflow_data_validation as tfdv
@@ -130,12 +130,11 @@ class Executor(base_executor.BaseExecutor):
 
         options = dict(api_endpoint=api_vertex_endpoint)
         client = JobServiceClient(client_options=options)
+        monitoring_job_search_response = client.list_model_deployment_monitoring_jobs(
+            request=monitoring_job_request)
 
-        if client.list_model_deployment_monitoring_jobs(
-                request=monitoring_job_request):
-            # response = client.update_model_deployment_monitoring_job(
-            #  model_deployment_monitoring_job=monitoring_job)
-            print("Monitoring job already active")
+        if len([page for page in monitoring_job_search_response.pages])==0:
+            logging.info('Monitoring job already active')
         else:
             response = client.create_model_deployment_monitoring_job(
                 parent=parent, model_deployment_monitoring_job=monitoring_job

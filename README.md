@@ -60,10 +60,10 @@ We will not actually perform those steps as building the docker image is a bit t
 but you can still find the file for the image in the repository of the project (as
 well as a file for an interactive image)
 - Building a custom docker image:
-  `docker build -t europe-docker.pkg.dev/devfest-sfeir/eu.gcr.io/tfx_augm:1.9.1 \
+  `docker build -t europe-docker.pkg.dev/par-devfest-sfeir/eu.gcr.io/tfx_augm:1.9.1 \
   -f docker/dockerfile_monitoring.dev .`
 - Pushing it on artefact registry:
-  `docker push europe-docker.pkg.dev/devfest-sfeir/eu.gcr.io/tfx_augm:1.9.1`
+  `docker push europe-docker.pkg.dev/par-devfest-sfeir/eu.gcr.io/tfx_augm:1.9.1`
 - Using the interactive image:
   `docker run -it
   -p 8888:8888
@@ -128,8 +128,8 @@ if 'google.colab' in sys.modules:
 Then set the endpoint parameters:
 ```
 ENDPOINT_ID='<TO DEFINE>'
-GOOGLE_CLOUD_PROJECT = 'par-devfest-sfeir'       
-GOOGLE_CLOUD_REGION = 'europe-west1'  
+GOOGLE_CLOUD_PROJECT = 'par-devfest-sfeir'
+GOOGLE_CLOUD_REGION = 'europe-west1'
 ```
 Define the client and the endpoint:
 ```
@@ -158,7 +158,7 @@ def _float_feature(value):
 def serialize_example(alcohol, chlorides, citric_acid, density, fixed_acidity, free_sulfur_dioxide,
                       ph, residual_sugar, sulphates, total_sulfur_dioxide, volatile_acidity):
   """Creates a tf.train.Example message.  """
-  
+
   # create a dictionary mapping the feature name to the tf.train.Example-compatible
   # data type
   feature = {
@@ -182,8 +182,8 @@ def serialize_example(alcohol, chlorides, citric_acid, density, fixed_acidity, f
 End finally send a request:
 ```
 instances = [{
-      "examples":{'b64': 
-      base64.b64encode(serialize_example(13.8, 0.036, 0.0, 0.98981, 4.7, 
+      "examples":{'b64':
+      base64.b64encode(serialize_example(13.8, 0.036, 0.0, 0.98981, 4.7,
                                          23.0, 3.53, 3.4, 0.92, 134.0, 0.785)).decode()}
       }]
 response = client.predict(endpoint=endpoint, instances=instances)
@@ -232,10 +232,10 @@ https://europe-west1-aiplatform.googleapis.com/v1/projects/par-devfest-sfeir/loc
 #### Monitoring job and monitoring data
 
 
-This dataset is public available for research. The details are described in [Cortez et al., 2009]. 
+This dataset is public available for research. The details are described in [Cortez et al., 2009].
   Please include this citation if you plan to use this database:
 
-  P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis. 
+  P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis.
   Modeling wine preferences by data mining from physicochemical properties.
   In Decision Support Systems>, Elsevier, 47(4):547-553. ISSN: 0167-9236.
 
@@ -243,14 +243,14 @@ This dataset is public available for research. The details are described in [Cor
                 [Pre-press (pdf)] http://www3.dsi.uminho.pt/pcortez/winequality09.pdf
                 [bib] http://www3.dsi.uminho.pt/pcortez/dss09.bib
 
-1. Title: Wine Quality 
+1. Title: Wine Quality
 
 2. Sources
    Created by: Paulo Cortez (Univ. Minho), António Cerdeira, Fernando Almeida, Telmo Matos and José Reis (CVRVV) @ 2009
-   
+
 3. Past Usage:
 
-  P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis. 
+  P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis.
   Modeling wine preferences by data mining from physicochemical properties.
   In Decision Support Systems>, Elsevier, 47(4):547-553. ISSN: 0167-9236.
 

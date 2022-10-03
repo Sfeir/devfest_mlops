@@ -1,6 +1,6 @@
 FROM gcr.io/tfx-oss-public/tfx:1.9.1
 
-ENV GOOGLE_APPLICATION_CREDENTIALS=sfeir-data-394b11f86ed4.json
+ENV GOOGLE_APPLICATION_CREDENTIALS=par-devfest-sfeir-920797f19349.json
 
 COPY src/monitorer_component monitorer_component
 COPY secrets/$GOOGLE_APPLICATION_CREDENTIALS $GOOGLE_APPLICATION_CREDENTIALS
