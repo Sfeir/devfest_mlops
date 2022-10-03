@@ -73,9 +73,6 @@ well as a file for an interactive image)
 -  A notebook can then be accessed in a browser at localhost:8888
 
 ### Getting started
-
-the data: ds.tbl_name contains
-  licence
 The reprository you cloned should contain the following files:
 ```
 |_ docker
@@ -85,17 +82,15 @@ The reprository you cloned should contain the following files:
   |_codelab
   | |  create_pipeline.py
   | |  main.py
-  | |  test_api_call.py
   | |  trainer.py
   | |  transformer.py
   | |_ monitorer_component
   |    __init__.py
   |    component.py
   |     executor.py
-  |_codelab
+  |_solutions
     |  create_pipeline.py
     |  main.py
-    |  test_api_call.py
     |  trainer.py
     |  transformer.py
     |_ monitorer_component
@@ -103,18 +98,9 @@ The reprository you cloned should contain the following files:
         component.py
         executor.py
 ```
-
-This lab is divided in X tasks whose description can be found hereafter
-
-
-#### step1
-#### step2
-#### step3
-#### step4
-#### step5
-
-### Wrapping up
-main
+This lab is devided into `codelab` and `solutions`. 
+Solutions contain a complete version of code that can be executed.
+Codelab contains a couple of TODOs with links to the necessary documentation for you to complete ;-) .
 
 ### Endpoint Predictions
 It's possible to send a prediction request to a Vertex Endpoint either using a client or a curl command.
@@ -233,16 +219,7 @@ https://europe-west1-aiplatform.googleapis.com/v1/projects/par-devfest-sfeir/loc
 -d "@input.json"
 ```
 
-### Observing things on GCP
-
-#### The pipeline
-#### Pipeline's artifacts
-#### Pipeline's logs
-#### Models
-#### Enpoints
-#### Monitoring job and monitoring data
-
-
+### License
 This dataset is public available for research. The details are described in [Cortez et al., 2009].
   Please include this citation if you plan to use this database:
 
