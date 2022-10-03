@@ -82,15 +82,26 @@ The reprository you cloned should contain the following files:
 |   dockerfile_monitoring.dev
 |   dockerfile_tfx_gcp_cli_interactive.dev
 |_ src
-  |  create_pipeline.py
-  |  main.py
-  |  test_api_call.py
-  |  trainer.py
-  |  transformer.py
-  |_ monitorer_component
-      __init__.py
-      component.py
-      executor.py
+  |_codelab
+  | |  create_pipeline.py
+  | |  main.py
+  | |  test_api_call.py
+  | |  trainer.py
+  | |  transformer.py
+  | |_ monitorer_component
+  |    __init__.py
+  |    component.py
+  |     executor.py
+  |_codelab
+    |  create_pipeline.py
+    |  main.py
+    |  test_api_call.py
+    |  trainer.py
+    |  transformer.py
+    |_ monitorer_component
+        __init__.py
+        component.py
+        executor.py
 ```
 
 This lab is divided in X tasks whose description can be found hereafter

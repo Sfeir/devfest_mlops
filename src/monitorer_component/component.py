@@ -28,7 +28,6 @@ class MonitorerComponentSpec(types.ComponentSpec):
   }
   OUTPUTS = {
       # This will be a dictionary which this component will populate
-      #'output_data': ChannelParameter(type=standard_artifacts.Examples),
   }
 
 class MonitorerComponent(base_component.BaseComponent):
@@ -45,12 +44,6 @@ class MonitorerComponent(base_component.BaseComponent):
                SAMPLE_RATE: Optional[int] = 0,
                EMAILS: Optional[str] = "",
                ):
-
-    #statistics_artifact = standard_artifacts.ExampleStatistics()
-    #pushed_model_artifact = standard_artifacts.PushedModel()
-
-    #statistics_artifact.split_names = statistics.get()[0].split_names
-    #pushed_model_artifact.split_names = pushed_model.get()[0].split_names
 
     spec = MonitorerComponentSpec(statistics=statistics,
                               pushed_model=pushed_model,
