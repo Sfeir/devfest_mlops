@@ -1,13 +1,8 @@
-import json
-import os
 from absl import logging
 from typing import Any, Dict, List
 
 from tfx import types
 from tfx.dsl.components.base import base_executor
-from tfx.dsl.io import fileio
-from tfx.types import artifact_utils
-from tfx.utils import io_utils
 
 
 class Executor(base_executor.BaseExecutor):
