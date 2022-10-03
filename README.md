@@ -98,9 +98,14 @@ The reprository you cloned should contain the following files:
         component.py
         executor.py
 ```
-This lab is devided into `codelab` and `solutions`. 
+This lab is devided into `codelab` and `solutions`.
 Solutions contain a complete version of code that can be executed.
-Codelab contains a couple of TODOs with links to the necessary documentation for you to complete ;-) .
+Codelab contains a couple of TODOs with links to the necessary documentation for you to complete ;-)
+
+Once you are finished you should be able to create and launch the job on vertex with the following command:
+`python3 main.py --google_cloud_project=par-devfest-sfeir --google_cloud_region=europe-west1 --google_cloud_dataset=wine_quality --wine_table=white_wine --gcs_bucket=<USERNAME>_mlops_lab --username=<USERNAME>`
+
+/!\ : Once the monitoring job has been created, trying to launch again the pipeline might crash at the last step 
 
 ### Endpoint Predictions
 It's possible to send a prediction request to a Vertex Endpoint either using a client or a curl command.

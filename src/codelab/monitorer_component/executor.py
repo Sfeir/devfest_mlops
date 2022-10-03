@@ -120,9 +120,6 @@ class Executor(base_executor.BaseExecutor):
         monitoring_job_search_response = client.list_model_deployment_monitoring_jobs(
             request=monitoring_job_request)
 
-        if len([page for page in monitoring_job_search_response.pages])==0:
-            logging.info('Monitoring job already active')
-        else:
-            response = client.create_model_deployment_monitoring_job(
-                parent=parent, model_deployment_monitoring_job=monitoring_job
-            )
+        response = client.create_model_deployment_monitoring_job(
+            parent=parent, model_deployment_monitoring_job=monitoring_job
+        )

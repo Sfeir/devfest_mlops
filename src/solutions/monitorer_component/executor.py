@@ -14,7 +14,6 @@ class Executor(base_executor.BaseExecutor):
     """Executor for MonitorerComponent."""
 
     def Do(self, input_dict: Dict[str, List[types.Artifact]],
-           output_dict: Dict[str, List[types.Artifact]],
            exec_properties: Dict[str, Any]) -> None:
 
         from google.cloud import aiplatform
@@ -38,21 +37,11 @@ class Executor(base_executor.BaseExecutor):
 
         aiplatform.init(project=project_id, location=region)
 
-        # endpoint = aiplatform.Endpoint.list(
-        # filter=f"display_name={deployed_model_display_name}",
-        #  order_by="update_time"
-        #  )[-1]
-
         model = aiplatform.Model(pushed_model_destination_uri)
-        # pusher_config = json.loads(pusher.exec_properties['custom_config'])
 
         model_name = model.display_name
-        # endpoint.gca_resource.deployed_models[0].display_name
         endpoint_id = model.to_dict()['deployedModels'][0]['endpoint']
-        # endpoint_id=endpoint.gca_resource.name.split('/')[-1]
         deployed_model_id = model.to_dict()['deployedModels'][0]['deployedModelId']
-
-        # deployed_model_id=endpoint.list_models()[0].id
 
         def get_features_names(features_file_uri: str):
             """
@@ -72,7 +61,6 @@ class Executor(base_executor.BaseExecutor):
         features = {}
         for feature in stats.datasets[0].features:
             features[feature.path.step[0]]: {'mean': feature.num_stats.mean, 'std_dev': feature.num_stats.std_dev}
-        # numerical_features, categorical_features = get_features_names(features_file_uri)
 
         sampling_config = SamplingStrategy.RandomSampleConfig(sample_rate=exec_properties['SAMPLE_RATE'])
         sampling_strategy = SamplingStrategy(random_sample_config=sampling_config)
@@ -104,7 +92,6 @@ class Executor(base_executor.BaseExecutor):
         monitoring_objective_configs.deployed_model_id = deployed_model_id
 
         # create the monitoring job
-        # endpoint = f"projects/{project_id}/locations/{region}/endpoints/{endpoint_id}"
         predict_schema = ""
         analysis_schema = ""
 
@@ -133,9 +120,6 @@ class Executor(base_executor.BaseExecutor):
         monitoring_job_search_response = client.list_model_deployment_monitoring_jobs(
             request=monitoring_job_request)
 
-        if len([page for page in monitoring_job_search_response.pages])==0:
-            logging.info('Monitoring job already active')
-        else:
-            response = client.create_model_deployment_monitoring_job(
-                parent=parent, model_deployment_monitoring_job=monitoring_job
-            )
+        response = client.create_model_deployment_monitoring_job(
+            parent=parent, model_deployment_monitoring_job=monitoring_job
+        )

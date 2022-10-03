@@ -23,8 +23,8 @@ class MonitorerComponentSpec(types.ComponentSpec):
   }
   INPUTS = {
       # This will be a dictionary with input artifacts, including URIs
-      'statistics': ChannelParameter(type=standard_artifacts.ExampleStatistics),
-      'pushed_model': ChannelParameter(type=standard_artifacts.PushedModel),
+      # TODO: define the input interface of the component
+      # reference: https://www.tensorflow.org/tfx/guide/custom_component
   }
   OUTPUTS = {
       # This will be a dictionary which this component will populate
