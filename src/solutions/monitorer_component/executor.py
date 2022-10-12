@@ -1,4 +1,3 @@
-from absl import logging
 from typing import Any, Dict, List
 
 from tfx import types
@@ -9,6 +8,7 @@ class Executor(base_executor.BaseExecutor):
     """Executor for MonitorerComponent."""
 
     def Do(self, input_dict: Dict[str, List[types.Artifact]],
+           output_dict: Dict[str, List[types.Artifact]],
            exec_properties: Dict[str, Any]) -> None:
 
         from google.cloud import aiplatform

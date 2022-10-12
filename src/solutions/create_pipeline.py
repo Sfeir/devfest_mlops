@@ -24,12 +24,10 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
         query=query, output_config=output)
 
     # compute the statistics
-    statistics_gen = tfx.components.StatisticsGen(
-        examples=example_gen.outputs['examples'])
+    statistics_gen = tfx.components.StatisticsGen(examples=example_gen.outputs['examples'])
 
     # generate schema
-    schema_gen = tfx.components.SchemaGen(
-        statistics=statistics_gen.outputs['statistics'])
+    schema_gen = tfx.components.SchemaGen(statistics=statistics_gen.outputs['statistics'])
 
     # pre-processe data
     transformer = tfx.components.Transform(
