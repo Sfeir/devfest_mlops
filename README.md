@@ -49,6 +49,7 @@ Two datasets corresponding to white and red wines are located in `par-devfest-sf
   `gcloud storage buckets create gs://<USERNAME>_mlops_lab --location='europe-west1'`
 
 #### The dev environment
+We strongly suggest, for this lab, that you use a basic cloudshell environment as some tools like python, pip and gcloud CLI will already be present in the environment. Later on you can always explore the repo on your own with a locally built environment
 - Clone the following repo:
   `git clone *repo_address*`
 - Run the following installs:
@@ -56,21 +57,18 @@ Two datasets corresponding to white and red wines are located in `par-devfest-sf
   `pip install --upgrade "tfx[kfp]<2"`
 
 #### The pipeline image
+
+**/!\ : The docker image part is purely informative, you have the dockerfile and the commands to build the image but the image that we are going to use for this lab has already been built (It is a long and heavy image to build)**
+
 We will not actually perform those steps as building the docker image is a bit time consuming,
 but you can still find the file for the image in the repository of the project (as
 well as a file for an interactive image)
+To start : `PROJECT_ID=par-devfest-sfeir`
 - Building a custom docker image:
-  `docker build -t europe-docker.pkg.dev/par-devfest-sfeir/eu.gcr.io/tfx_augm:1.9.1 \
+  `docker build -t europe-west1-docker.pkg.dev/$PROJECT_ID/devfest-2022/tfx_augm:1.9.1 \
   -f docker/dockerfile_monitoring.dev .`
 - Pushing it on artefact registry:
-  `docker push europe-docker.pkg.dev/par-devfest-sfeir/eu.gcr.io/tfx_augm:1.9.1`
-- Using the interactive image:
-  `docker run -it
-  -p 8888:8888
-  -v *path_to_project_root*:/tfx/src/devfest_mlops
-  europe-docker.pkg.dev/devfest-sfeir/eu.gcr.io/tfx_augm_interactive:1.9.1`
--  `jupyter notebook --allow-root ---ip=0.0.0.0` # inside the notebook
--  A notebook can then be accessed in a browser at localhost:8888
+  `docker push europe-west1-docker.pkg.dev/$PROJECT_ID/devfest-2022/tfx_augm:1.9.1`
 
 ### Getting started
 The reprository you cloned should contain the following files:
@@ -97,17 +95,25 @@ The reprository you cloned should contain the following files:
         __init__.py
         component.py
         executor.py
+#### Structure of the lab
 ```
-This lab is devided into `codelab` and `solutions`.
+This lab is divided into `codelab` and `solutions`.
 Solutions contain a complete version of code that can be executed.
 Codelab contains a couple of TODOs with links to the necessary documentation for you to complete ;-)
+They can be found in :
+ - create_pipeline.py
+    By completing this TODOs you will understand how to link components between each other and how the flow of the pipeline is being built
+ - monitorer/component.py
+    We have mostly used predefined components, but monitorer_component is a custom defined component. In this component we need to define the interface of this component by completing the MonitorerComponentSpec <class> from component.py
+    The Executor inside the component and the component class have already been defined. In the end this part matter less as our custom docker image already embarks the solutions.monitorer_component.
 
-Once you are finished you should be able to create and launch the job on vertex with the following command:
+At any point you can launch the pipeline with the following command:
 ```
 python3 main.py --google_cloud_project=par-devfest-sfeir --google_cloud_region=europe-west1 --google_cloud_dataset=wine_quality --wine_table=white_wine --gcs_bucket=<USERNAME>_mlops_lab --username=<USERNAME>
 ```
+You can then inspect the logs and see your progresses and errors
 
-/!\ : Once the monitoring job has been created, trying to re-launch the pipeline might throw an error at the last step.
+**/!\ : Once the monitoring job has been created, trying to re-launch the pipeline might throw an error at the last step.**
 
 ### Endpoint Predictions
 It's possible to send a prediction request to a Vertex Endpoint either using a client or a curl command.
@@ -122,6 +128,42 @@ pip install --upgrade pip
 pip install --upgrade "tfx[kfp]<2"
 ```
 
+#### Querying from cloudshell
+If we want to specify a signature with the request, we need to use curl. Signature specification in python library is currently not supported.
+
+Write the request data manually or programmatically to a json file first, using python interpreter:
+```
+import json
+data = {
+  "instances" : [{
+      "alcohol": [13.8],
+      "chlorides": [0.036],
+      "citric_acid": [0.0],
+      "density": [0.98981],
+      "fixed_acidity": [4.7],
+      "free_sulfur_dioxide": [23.0],
+      "ph": [3.53],
+      "residual_sugar": [3.4],
+      "sulphates": [0.92],
+      "total_sulfur_dioxide": [134.0],
+      "volatile_acidity": [0.785]
+    }],
+  "signature_name": "serving_raw"
+}
+with open("input.json", "w") as f:
+  f.write(json.dumps(data))
+```
+And send a POST request from a the shell:
+```
+curl \
+-X POST \
+-H "Authorization: Bearer $(gcloud auth print-access-token)" \
+-H "Content-Type: application/json" \
+https://europe-west1-aiplatform.googleapis.com/v1/projects/par-devfest-sfeir/locations/europe-west1/endpoints/<TO DEFINE>:rawPredict \
+-d "@input.json"
+```
+
+#### Querying with python
 If you request a prediction from Colab Notebook, you need to authorize the connection :
 ```
 import sys
@@ -191,39 +233,6 @@ instances = [{
                                          23.0, 3.53, 3.4, 0.92, 134.0, 0.785)).decode()}
       }]
 response = client.predict(endpoint=endpoint, instances=instances)
-```
-2. If we want to specify a signature with the request, we need to use curl. Signature specification in python library is currently not supported.
-
-Write the request data manually or programmatically to a json file:
-```
-import json
-data = {
-  "instances" : [{
-      "alcohol": [13.8],
-      "chlorides": [0.036],
-      "citric_acid": [0.0],
-      "density": [0.98981],
-      "fixed_acidity": [4.7],
-      "free_sulfur_dioxide": [23.0],
-      "ph": [3.53],
-      "residual_sugar": [3.4],
-      "sulphates": [0.92],
-      "total_sulfur_dioxide": [134.0],
-      "volatile_acidity": [0.785]
-    }],
-  "signature_name": "serving_raw"
-}
-with open("input.json", "w") as f:
-  f.write(json.dumps(data))
-```
-And send a POST request:
-```
-curl \
--X POST \
--H "Authorization: Bearer $(gcloud auth print-access-token)" \
--H "Content-Type: application/json" \
-https://europe-west1-aiplatform.googleapis.com/v1/projects/par-devfest-sfeir/locations/europe-west1/endpoints/<TO DEFINE>:rawPredict \
--d "@input.json"
 ```
 
 ### License
