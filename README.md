@@ -95,17 +95,24 @@ The reprository you cloned should contain the following files:
         __init__.py
         component.py
         executor.py
-#### Structure of the lab
 ```
+
+#### Structure of the lab
+
 This lab is divided into `codelab` and `solutions`.
 Solutions contain a complete version of code that can be executed.
 Codelab contains a couple of TODOs with links to the necessary documentation for you to complete ;-)
+
 They can be found in :
- - create_pipeline.py
+ - [ ] create_pipeline.py
+    
     By completing this TODOs you will understand how to link components between each other and how the flow of the pipeline is being built
- - monitorer/component.py
-    We have mostly used predefined components, but monitorer_component is a custom defined component. In this component we need to define the interface of this component by completing the MonitorerComponentSpec <class> from component.py
+ - [ ] monitorer/component.py
+    
+    We have mostly used predefined components, but monitorer_component is a custom defined component. In this component we need to define the interface of this component by completing the MonitorerComponentSpec *class* from component.py
     The Executor inside the component and the component class have already been defined. In the end this part matter less as our custom docker image already embarks the solutions.monitorer_component.
+
+#### Running things
 
 At any point you can launch the pipeline with the following command:
 ```
@@ -120,7 +127,7 @@ It's possible to send a prediction request to a Vertex Endpoint either using a c
 
 The tests can be performed either from Cloud Shell or from a Colab Notebook.
 
-1. The default serving signature requires a TFRecord, so we will use a python client to send a request.
+The default serving signature requires a TFRecord, so we will use a python client to send a request.
 
 First, you need to install the necessary packages :
 ```
