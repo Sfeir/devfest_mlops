@@ -11,9 +11,22 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
                      project_id: str, region: str,
                      beam_pipeline_args: Optional[List[str]],
                      ) -> tfx.dsl.Pipeline:
-    """Creates a TFX pipeline using BigQuery."""
+    """
+    Creates a TFX pipeline with BigQuery as a source, trained a model, deploys it to Vertex AI endpoints
+    and creates a monitoring job to analyze input requests for data drift.
+    :param pipeline_name: name of the pipeline
+    :param pipeline_root: Google Cloud Storage URI to store pipeline artifacts
+    :param query: sql query to extract data
+    :param transformer_module_file: custom transformation routine to pre-process data
+    :param trainer_module_file: custom model training
+    :param endpoint_name: name of an endpoint the trained model is going to be deployed to
+    :param project_id: project id
+    :param region: Google Cloud region
+    :param beam_pipeline_args: project settings necessary for BigQuery query component
+    :return TFX Pipeline
+    """
 
-    # query data in BigQuery as a data source.
+    # query data in BigQuery as a data source
     output = tfx.proto.Output(
         split_config=tfx.proto.SplitConfig(splits=[
             tfx.proto.SplitConfig.Split(name='train', hash_buckets=4),
@@ -29,13 +42,13 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
     # generate schema
     schema_gen = tfx.components.SchemaGen(statistics=statistics_gen.outputs['statistics'])
 
-    # pre-processe data
+    # pre-process data
     transformer = tfx.components.Transform(
         examples=example_gen.outputs['examples'],
         schema=schema_gen.outputs['schema'],
         module_file=transformer_module_file)
 
-    # use user-provided Python function that trains a model
+    # train the model with user-provided Python function
     trainer = tfx.components.Trainer(
         module_file=trainer_module_file,
         examples=transformer.outputs['transformed_examples'],
@@ -67,7 +80,9 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
 
     # create the monitoring job
     monitorer = component.MonitorerComponent(statistics=statistics_gen.outputs['statistics'],
-                                             pushed_model=pusher.outputs['pushed_model'])
+                                             pushed_model=pusher.outputs['pushed_model'],
+                                             project_id=project_id,
+                                             region=region)
 
     components = [
         example_gen,

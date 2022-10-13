@@ -60,7 +60,7 @@ def _get_serve_tf_examples_fn(model, tf_transform_output):
     return serve_tf_examples_fn
 
 
-def _get_serve_raw(model, transform_output):
+def _get_serve_raw_fn(model, transform_output):
     """Returns a function that parses a raw data request and applies TFT."""
 
     model.tft_layer = transform_output.transform_features_layer()
@@ -170,7 +170,7 @@ def run_fn(fn_args: tfx.components.FnArgs):
                     shape=[None],
                     dtype=tf.string,
                     name='examples')),
-        "serving_raw": _get_serve_raw(model, tf_transform_output).get_concrete_function(
+        'serving_raw': _get_serve_raw_fn(model, tf_transform_output).get_concrete_function(
             tf.TensorSpec(shape=[None, None], dtype=tf.float32, name='alcohol'),
             tf.TensorSpec(shape=[None, None], dtype=tf.float32, name='chlorides'),
             tf.TensorSpec(shape=[None, None], dtype=tf.float32, name='citric_acid'),
@@ -181,7 +181,7 @@ def run_fn(fn_args: tfx.components.FnArgs):
             tf.TensorSpec(shape=[None, None], dtype=tf.float32, name='residual_sugar'),
             tf.TensorSpec(shape=[None, None], dtype=tf.float32, name='sulphates'),
             tf.TensorSpec(shape=[None, None], dtype=tf.float32, name='total_sulfur_dioxide'),
-            tf.TensorSpec(shape=[None, None], dtype=tf.float32, name='volatile_acidity'),
+            tf.TensorSpec(shape=[None, None], dtype=tf.float32, name='volatile_acidity')
         )
     }
 

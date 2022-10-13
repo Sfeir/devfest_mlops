@@ -12,7 +12,7 @@ but more importantly we will integrate our data science pipeline into an Ops pip
 allowing us to train, deploy, and monitor a model in production letting us concentrate
 on the important task of data science, improving the performance of the model.
 
-So follow us, while we show you how to get MLOps tasks out of the way. !!
+So follow us, while we show you how to get MLOps tasks out of the way !!
 
 ## Objectives
 
@@ -38,7 +38,7 @@ and monitoring models on your own, on a scalable and highly available platform.
 ## Technical details
 
 - Duration : 2H
-- Requirements : A computer, an internet connexion and a gmail address
+- Requirements : A computer, an internet connexion and a gmail e-mail
 
 ## Workshop
 
@@ -56,50 +56,52 @@ Two datasets corresponding to white and red wines are located in `par-devfest-sf
   `gcloud storage buckets create gs://<USERNAME>_mlops_lab --location='europe-west1'`
 
 #### The dev environment
-We strongly suggest, for this lab, that you use a basic cloudshell environment as some tools like python, pip and gcloud CLI will already be present in the environment. Later on you can always explore the repo on your own with a locally built environment
+We strongly suggest, for this lab, that you use a basic Cloud Shell environment as some tools like python, pip and gcloud CLI will already be present in the environment. Later on you can always explore the repo on your own with a locally built environment.
 - Clone the following repo:
   `git clone *repo_address*`
 - Run the following installs:
-  `pip install --upgrade pip`
-  `pip install --upgrade "tfx[kfp]<2"`
+  ```
+  pip install --upgrade pip
+  pip install --upgrade "tfx[kfp]<2"
+  ```
 
 #### The pipeline image
 
-**/!\ : Due to time constraints, the docker image part is purely informative, you have the dockerfile and the commands to build the image but the image that we are going to use for this lab has already been built**
+**/!\ : Due to time constraints, the docker image part is purely informative, you have the dockerfile and the commands to build the image but the image that we are going to use for this lab has already been built.**
 
 To start : 
 - `PROJECT_ID=par-devfest-sfeir`
-- Building a custom docker image:
-  `docker build -t europe-west1-docker.pkg.dev/$PROJECT_ID/devfest-2022/tfx_augm:1.9.1 \
-  -f docker/dockerfile_monitoring.dev .`
-- Pushing it on artefact registry:
+- Build a custom docker image:
+  `docker build -f docker/dockerfile_monitoring.dev . -t europe-west1-docker.pkg.dev/$PROJECT_ID/devfest-2022/tfx_augm:1.9.1`
+- Push it to artefact registry:
   `docker push europe-west1-docker.pkg.dev/$PROJECT_ID/devfest-2022/tfx_augm:1.9.1`
 
 ### Getting started
-The reprository you cloned should contain the following files:
+The repository you've just cloned should contain the following files:
 ```
 |_ docker
 |   dockerfile_monitoring.dev
-|   dockerfile_tfx_gcp_cli_interactive.dev
 |_ src
-  |_codelab
-  | |  create_pipeline.py
-  | |  main.py
-  | |  trainer.py
-  | |  transformer.py
-  | |_ monitorer_component
-  |    __init__.py
-  |    component.py
-  |     executor.py
-  |_solutions
-    |  create_pipeline.py
-    |  main.py
-    |  trainer.py
-    |  transformer.py
-    |_ monitorer_component
-        __init__.py
-        component.py
-        executor.py
+| |_codelab
+| | |  create_pipeline.py
+| | |  main.py
+| | |  trainer.py
+| | |  transformer.py
+| | |_ monitorer_component
+| |    __init__.py
+| |    component.py
+| |    executor.py
+| |_solutions
+|   |  create_pipeline.py
+|   |  main.py
+|   |  trainer.py
+|   |  transformer.py
+|   |_ monitorer_component
+|       __init__.py
+|       component.py
+|       executor.py
+|
+|_ wine_quality_notebook.ipynb
 ```
 
 #### Structure of the lab
@@ -111,23 +113,25 @@ Codelab contains a couple of TODOs with links to the necessary documentation for
 They can be found in :
  - [ ] create_pipeline.py
     
-    By completing this TODOs you will understand how to link components between each other and how the flow of the pipeline is being built
+    By completing this TODOs you will understand how to link components between each other and how the flow of the pipeline is being built.
  - [ ] monitorer/component.py
     
     We have mostly used predefined components, but monitorer_component is a custom defined component. In this component we need to define the interface of this component by completing the MonitorerComponentSpec *class* from component.py
-    The Executor inside the component and the component class have already been defined.
-    *This part matters less as our custom docker image already embarks the solutions.monitorer_component allowing you to have a fully running pipeline even if you din't finish this part*
+    The Executor inside the component, and the component class have already been defined.
+    *This part matters less as our custom docker image already embarks the solutions.monitorer_component allowing you to have a fully running pipeline even if you didn't finish this part.*
+
+Nevertheless, don't be discouraged from exploring the rest of the code as well!
 
 #### Running things
 
 At any point you can launch the pipeline with the following command:
 ```
-python3 main.py --google_cloud_project=par-devfest-sfeir --google_cloud_region=europe-west1 --google_cloud_dataset=wine_quality --wine_table=white_wine --gcs_bucket=<USERNAME>_mlops_lab --username=<USERNAME>
+python main.py --google_cloud_project=par-devfest-sfeir --google_cloud_region=europe-west1 --dataset_id=wine_quality --wine_table=white_wine --gcs_bucket=<USERNAME>_mlops_lab --username=<USERNAME>
 ```
 
-At the end of logs line appearing in your terminal, the command will generate a link to the GCP platform where you will be able to follow you pipeline run interactively.
+At the end of logs line appearing in your terminal, the command will generate a link to the GCP platform where you will be able to follow your pipeline run interactively.
 
-You can then inspect the objects, to further explore logs and see your progresses and errors
+You can then inspect the objects, further explore the logs and see your progress and errors.
 
 **/!\ : Once the monitoring job has been created, trying to re-launch the pipeline might throw an error at the last step.**
 
@@ -251,15 +255,15 @@ instances = [{
 response = client.predict(endpoint=endpoint, instances=instances)
 ```
 
-### Conclusion
+### Conclusions
 Congratulations !! 
 
 You have now finished this lab, we encourage you to explore the objects generated by your pipelines:
 - Click on the boxes and use the option expand artifacts to get sense of the steps, objects and logs available after the run
 - The artifacts can be found on GCS
-- The models and endpoints can be seen in some VertexAI pages
+- The models and endpoints can be seen in some Vertex AI pages
 - In the pipelines page you can see your runs and other participants run
-- You can also explore bigquery to the dataset and the monitoring dataset you have created where you should be able to see the request previously sent (if you have any doubts about which is your dataset the ID of the monitoring job can be found by exploring your monitoring job from the endpoint page in the vertexAI section of GCP)
+- You can also explore bigquery to the dataset and the monitoring dataset you have created where you should be able to see the request previously sent (if you have any doubts about which is your dataset the ID of the monitoring job can be found by exploring your monitoring job from the endpoint page in the Vertex AI section of GCP)
 
 Regards !
 

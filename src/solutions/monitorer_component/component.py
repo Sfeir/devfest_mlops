@@ -1,34 +1,31 @@
 from typing import Optional
-
 from tfx import types
+
 from tfx.dsl.components.base import base_component
 from tfx.dsl.components.base import executor_spec
-from monitorer_component import executor
-from tfx.types import channel_utils
 from tfx.types import standard_artifacts
 from tfx.types.component_spec import ChannelParameter
 from tfx.types.component_spec import ExecutionParameter
 
+from monitorer_component import executor
+
 
 class MonitorerComponentSpec(types.ComponentSpec):
-    """ComponentSpec for Custom TFX Hello World Component."""
+    """ComponentSpec for Custom TFX Monitorer Component."""
 
     PARAMETERS = {
-        # These are parameters that will be passed in the call to
-        # create an instance of this component.
-        'DEFAULT_THRESHOLD_VALUE': ExecutionParameter(type=float),
-        'MONITORING_FREQUENCY': ExecutionParameter(type=int),
-        'SAMPLE_RATE': ExecutionParameter(type=int),
-        'EMAILS': ExecutionParameter(type=str)
+        'project_id': ExecutionParameter(type=str),
+        'region': ExecutionParameter(type=str),
+        'default_threshold_value': ExecutionParameter(type=float),
+        'monitoring_frequency': ExecutionParameter(type=int),
+        'sample_rate': ExecutionParameter(type=int),
+        'emails': ExecutionParameter(type=str)
     }
     INPUTS = {
-        # This will be a dictionary with input artifacts, including URIs
         'statistics': ChannelParameter(type=standard_artifacts.ExampleStatistics),
         'pushed_model': ChannelParameter(type=standard_artifacts.PushedModel),
     }
     OUTPUTS = {
-        # This will be a dictionary which this component will populate
-        # 'output_data': ChannelParameter(type=standard_artifacts.Examples),
     }
 
 
@@ -39,24 +36,33 @@ class MonitorerComponent(base_component.BaseComponent):
     EXECUTOR_SPEC = executor_spec.ExecutorClassSpec(executor.Executor)
 
     def __init__(self,
-                 statistics: types.Channel = None,
-                 pushed_model: types.Channel = None,
-                 DEFAULT_THRESHOLD_VALUE: Optional[float] = 0.03,
-                 MONITORING_FREQUENCY: Optional[int] = 3600,
-                 SAMPLE_RATE: Optional[int] = 0,
-                 EMAILS: Optional[str] = "",
+                 statistics: types.Channel,
+                 pushed_model: types.Channel,
+                 project_id: str,
+                 region: str,
+                 default_threshold_value: Optional[float] = 0.03,
+                 monitoring_frequency: Optional[int] = 3600,
+                 sample_rate: Optional[int] = 0.6,
+                 emails: Optional[str] = "",
                  ):
-        # statistics_artifact = standard_artifacts.ExampleStatistics()
-        # pushed_model_artifact = standard_artifacts.PushedModel()
-
-        # statistics_artifact.split_names = statistics.get()[0].split_names
-        # pushed_model_artifact.split_names = pushed_model.get()[0].split_names
-
+        """
+        Construct a Monitorer Component
+        :param statistics: statistics generated based on input data
+        :param pushed_model: deployed model
+        :param project_id: id of Google Cloud project
+        :param region: Google Cloud region in which the model was deployed
+        :param default_threshold_value: default threshold value for data drift
+        :param monitoring_frequency: frequency at which model's recently logged inputs are monitored
+        :param sample_rate: percentage of input data logged
+        :param emails: emails used for notification
+        """
         spec = MonitorerComponentSpec(statistics=statistics,
                                       pushed_model=pushed_model,
-                                      DEFAULT_THRESHOLD_VALUE=DEFAULT_THRESHOLD_VALUE,
-                                      MONITORING_FREQUENCY=MONITORING_FREQUENCY,
-                                      SAMPLE_RATE=SAMPLE_RATE,
-                                      EMAILS=EMAILS
+                                      project_id=project_id,
+                                      region=region,
+                                      default_threshold_value=default_threshold_value,
+                                      monitoring_frequency=monitoring_frequency,
+                                      sample_rate=sample_rate,
+                                      emails=emails
                                       )
         super(MonitorerComponent, self).__init__(spec=spec)
