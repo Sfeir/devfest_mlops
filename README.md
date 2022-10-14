@@ -73,7 +73,7 @@ To start :
 - `cd devfest_mlops`
 - `PROJECT_ID=par-devfest-sfeir`
 - Build a custom docker image:
-  `docker build -f docker/dockerfile_monitoring.dev . -t europe-west1-docker.pkg.dev/$PROJECT_ID/devfest-2022/tfx_augm:1.9.1 docker/dockerfile_monitoring.dev`
+  `docker build -f docker/dockerfile_monitoring.dev . -t europe-west1-docker.pkg.dev/$PROJECT_ID/devfest-2022/tfx_augm:1.9.1`
 - Push it to artefact registry:
   `docker push europe-west1-docker.pkg.dev/$PROJECT_ID/devfest-2022/tfx_augm:1.9.1`
 
