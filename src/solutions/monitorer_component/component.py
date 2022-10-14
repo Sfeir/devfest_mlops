@@ -18,7 +18,7 @@ class MonitorerComponentSpec(types.ComponentSpec):
         'region': ExecutionParameter(type=str),
         'default_threshold_value': ExecutionParameter(type=float),
         'monitoring_frequency': ExecutionParameter(type=int),
-        'sample_rate': ExecutionParameter(type=int),
+        'sample_rate': ExecutionParameter(type=float),
         'emails': ExecutionParameter(type=str)
     }
     INPUTS = {
@@ -42,7 +42,7 @@ class MonitorerComponent(base_component.BaseComponent):
                  region: str,
                  default_threshold_value: Optional[float] = 0.03,
                  monitoring_frequency: Optional[int] = 3600,
-                 sample_rate: Optional[int] = 0.6,
+                 sample_rate: Optional[float] = 0.6,
                  emails: Optional[str] = "",
                  ):
         """
