@@ -29,7 +29,7 @@ and monitoring models on your own, on a scalable and highly available platform.
 - Comprehension of Kubernetes principles
 - Notions of Kubeflow
 - Notions of VertexAI
-- Notions of GCP (GCS, Bigquery, Cloudshell)
+- Notions of GCP (GCS, Bigquery, Cloud Shell)
 - Notions of Docker
 - Understanding of ML problematics
 - Knowledge of MLOps problematics
@@ -67,7 +67,7 @@ We strongly suggest, for this lab, that you use a basic Cloud Shell environment 
 
 #### The pipeline image
 
-**/!\ : Due to time constraints, the docker image part is purely informative, you have the dockerfile and the commands to build the image but the image that we are going to use for this lab has already been built.**
+**/!\ : Due to time constraints, the docker image part is purely informative, you have the dockerfile, and the commands to build the image, but the image that we are going to use for this lab has already been built.**
 
 To start : 
 - `PROJECT_ID=par-devfest-sfeir`
@@ -108,7 +108,7 @@ The repository you've just cloned should contain the following files:
 
 This lab is divided into `codelab` and `solutions`.
 Solutions contain a complete version of code that can be executed.
-Codelab contains a couple of TODOs with links to the necessary documentation for you to complete ;-)
+CodeLab contains a couple of TODOs with links to the necessary documentation for you to complete ;-)
 
 They can be found in :
  - [ ] create_pipeline.py
@@ -129,7 +129,7 @@ At any point you can launch the pipeline with the following command:
 python main.py --google_cloud_project=par-devfest-sfeir --google_cloud_region=europe-west1 --dataset_id=wine_quality --wine_table=white_wine --gcs_bucket=<USERNAME>_mlops_lab --username=<USERNAME>
 ```
 
-At the end of logs line appearing in your terminal, the command will generate a link to the GCP platform where you will be able to follow your pipeline run interactively.
+At the end of logs appearing in your terminal, the command will generate a link to the GCP platform where you will be able to follow your pipeline run interactively.
 
 You can then inspect the objects, further explore the logs and see your progress and errors.
 
@@ -148,7 +148,7 @@ pip install --upgrade pip
 pip install --upgrade "tfx[kfp]<2"
 ```
 
-#### Querying from cloudshell
+#### Querying from Cloud Shell
 If we want to specify a signature with the request, we need to use curl. Signature specification in python library is currently not supported.
 
 Write the request data manually or programmatically to a json file first, using python interpreter:
@@ -173,7 +173,7 @@ data = {
 with open("input.json", "w") as f:
   f.write(json.dumps(data))
 ```
-And send a POST request from a the shell:
+And send a POST request from the Cloud Shell:
 ```
 curl \
 -X POST \
@@ -245,7 +245,7 @@ def serialize_example(alcohol, chlorides, citric_acid, density, fixed_acidity, f
   example_proto = tf.train.Example(features=tf.train.Features(feature=feature))
   return example_proto.SerializeToString()
 ```
-And finally send a request:
+Finally, send a request:
 ```
 instances = [{
       "examples":{'b64':
@@ -263,7 +263,7 @@ You have now finished this lab, we encourage you to explore the objects generate
 - The artifacts can be found on GCS
 - The models and endpoints can be seen in some Vertex AI pages
 - In the pipelines page you can see your runs and other participants run
-- You can also explore bigquery to the dataset and the monitoring dataset you have created where you should be able to see the request previously sent (if you have any doubts about which is your dataset the ID of the monitoring job can be found by exploring your monitoring job from the endpoint page in the Vertex AI section of GCP)
+- You can also explore bigquery to the dataset, and the monitoring dataset you have created where you should be able to see the request previously sent (if you have any doubts about which is your dataset the ID of the monitoring job can be found by exploring your monitoring job from the endpoint page in the Vertex AI section of GCP)
 
 Regards !
 
