@@ -4,8 +4,8 @@
 
 Welcome to this lab dealing with MLOps problematics.
 
-In this lab we will manipulate
-data about wine.
+In this lab we will manipulate wine quality
+data.
 
 We will train a model trying to predict if a wine will be good or not,
 but more importantly we will integrate our data science pipeline into an Ops pipeline,
@@ -16,11 +16,11 @@ So follow us, while we show you how to get MLOps tasks out of the way !!
 
 ## Objectives
 
-The objective of this lab is to run a training pipeline in vertexAI, create an endpoint,
+The objective of this lab is to run a training pipeline in VertexAI, create an endpoint,
 deploy a model and deploy a monitoring job. We use tensorflow extended (tfx) as a framework
 to achieve our goal.
 
-During this lab, you will design components for vertexAI integrating
+During this lab, you will design components for VertexAI integrating
 custom tensorflow code. This will allow you to later be able to handle training, deploying
 and monitoring models on your own, on a scalable and highly available platform.
 
