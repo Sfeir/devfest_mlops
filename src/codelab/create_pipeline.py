@@ -66,7 +66,7 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
         'endpoint_name': endpoint_name,
         'machine_type': 'n1-standard-4'
     }
-    serving_image = 'europe-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-8:latest'
+    serving_image = 'europe-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-15:latest'
 
     pusher = tfx.extensions.google_cloud_ai_platform.Pusher(
         model=trainer.outputs['model'],
