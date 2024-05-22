@@ -4,6 +4,7 @@ import tensorflow_transform as tft
 from typing import List
 from absl import logging
 from tensorflow import keras
+from tensorflow.keras.callbacks import EarlyStopping
 from tfx import v1 as tfx
 
 _FEATURE_KEYS = [
@@ -16,6 +17,7 @@ _LABEL_KEY = 'quality'
 _TRAIN_BATCH_SIZE = 512
 _EVAL_BATCH_SIZE = 128
 _NB_EPOCH = 200
+_PATIENCE = 10
 
 
 def _gzip_reader_fn(filenames):
@@ -111,13 +113,13 @@ def _make_keras_model() -> tf.keras.Model:
     inputs = [keras.layers.Input(shape=(1,), name=f) for f in _FEATURE_KEYS]
 
     model_layers = keras.layers.concatenate(inputs)
-    model_layers = keras.layers.Dense(units=20, activation='relu')(model_layers)
+    model_layers = keras.layers.Dense(units=16, activation='relu')(model_layers)
     model_layers = keras.layers.Dropout(0.1)(model_layers)
     model_layers = keras.layers.BatchNormalization()(model_layers)
-    model_layers = keras.layers.Dense(units=8, activation='relu')(model_layers)
+    model_layers = keras.layers.Dense(units=32, activation='relu')(model_layers)
     model_layers = keras.layers.Dropout(0.1)(model_layers)
     model_layers = keras.layers.BatchNormalization()(model_layers)
-    model_layers = keras.layers.Dense(units=12, activation='relu')(model_layers)
+    model_layers = keras.layers.Dense(units=32, activation='relu')(model_layers)
     model_layers = keras.layers.Dropout(0.1)(model_layers)
     model_layers = keras.layers.BatchNormalization()(model_layers)
 
@@ -154,12 +156,15 @@ def run_fn(fn_args: tfx.components.FnArgs):
         50,
         batch_size=_EVAL_BATCH_SIZE)
 
+    early_stopping = EarlyStopping(monitor='val_accuracy', patience=_PATIENCE)
+
     model = _make_keras_model()
     model.fit(
         train_dataset,
         steps_per_epoch=fn_args.train_steps,
         validation_data=eval_dataset,
         validation_steps=fn_args.eval_steps,
+        callbacks=[early_stopping],
         epochs=_NB_EPOCH)
 
     # defines serving signatures : default and raw data
