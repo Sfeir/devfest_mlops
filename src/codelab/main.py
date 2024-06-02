@@ -40,7 +40,7 @@ def main(google_cloud_project: str, google_cloud_region: str, dataset_id: str, w
     ]
     pipeline_definition_file = pipeline_name + '_pipeline.json'
 
-    custom_tfx_image = f'europe-west1-docker.pkg.dev/{google_cloud_project}/devfest-2022/tfx_augm:1.9.1'
+    custom_tfx_image = f'europe-west1-docker.pkg.dev/{google_cloud_project}/devfest-2022/tfx_augm:1.15.1'
     _transformer_module_file = 'transformer.py'
     _trainer_module_file = 'trainer.py'
 
