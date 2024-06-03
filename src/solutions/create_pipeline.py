@@ -84,7 +84,8 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
     monitorer = component.MonitorerComponent(statistics=statistics_gen.outputs['statistics'],
                                              pushed_model=pusher.outputs['pushed_model'],
                                              project_id=project_id,
-                                             region=region)
+                                             region=region,
+                                             email=email)
 
     components = [
         example_gen,
