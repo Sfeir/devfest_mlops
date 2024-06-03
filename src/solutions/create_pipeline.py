@@ -9,6 +9,7 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
                      trainer_module_file: str,
                      endpoint_name: str,
                      project_id: str, region: str,
+                     email:str,
                      beam_pipeline_args: Optional[List[str]],
                      ) -> tfx.dsl.Pipeline:
     """
@@ -22,6 +23,7 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
     :param endpoint_name: name of an endpoint the trained model is going to be deployed to
     :param project_id: project id
     :param region: Google Cloud region
+    :param email: email address for monitoring job
     :param beam_pipeline_args: project settings necessary for BigQuery query component
     :return TFX Pipeline
     """

@@ -44,10 +44,10 @@ class Executor(base_executor.BaseExecutor):
         :param exec_properties: parameters passed in the call to create an instance of this component
             - project_id: id of Google Cloud project
             - region: Google Cloud region in which the model was deployed
+            - email: email used for notification
             - default_threshold_value: default threshold value for data drift
             - monitoring_frequency: frequency at which model's recently logged inputs are monitored
             - sample_rate: percentage of input data logged
-            - emails: emails used for notification
         """
 
         pushed_model_destination_uri = input_dict['pushed_model'][0].get_string_custom_property('pushed_destination')
@@ -77,7 +77,7 @@ class Executor(base_executor.BaseExecutor):
         monitoring_duration = Duration(seconds=exec_properties['monitoring_frequency'])
         monitoring_config = ModelDeploymentMonitoringScheduleConfig(monitor_interval=monitoring_duration)
 
-        email_config = ModelMonitoringAlertConfig.EmailAlertConfig(user_emails=[exec_properties['emails']])
+        email_config = ModelMonitoringAlertConfig.EmailAlertConfig(user_emails=[exec_properties['email']])
         alert_config = ModelMonitoringAlertConfig(email_alert_config=email_config)
 
         # monitoring whether feature data distribution changes significantly over time

@@ -16,8 +16,9 @@ from google.cloud.aiplatform import pipeline_jobs
 @click.option("--wine_table", required=True, type=click.STRING)
 @click.option("--gcs_bucket", required=True, type=click.STRING)
 @click.option("--username", required=True, type=click.STRING)
+@click.option("--email", required=True, type=click.STRING)
 def main(google_cloud_project: str, google_cloud_region: str, dataset_id: str, wine_table: str,
-         gcs_bucket: str, username: str):
+         gcs_bucket: str, username: str, email: str):
     """
     Main function that launches a machine learning pipeline
     :param google_cloud_project: Google Cloud project id
@@ -26,6 +27,7 @@ def main(google_cloud_project: str, google_cloud_region: str, dataset_id: str, w
     :param wine_table: BigQuery table name
     :param gcs_bucket: Google Storage bucket for pipeline artifacts
     :param username: codelab parameter to separate users' pipelines
+    :param email: email address for monitoring job
     """
     logging.getLogger().setLevel(logging.INFO)
 
@@ -58,6 +60,7 @@ def main(google_cloud_project: str, google_cloud_region: str, dataset_id: str, w
             endpoint_name=endpoint_name,
             project_id=google_cloud_project,
             region=google_cloud_region,
+            email=email,
             beam_pipeline_args=bigquery_pipeline_args))
 
     aiplatform.init(project=google_cloud_project, location=google_cloud_region)
