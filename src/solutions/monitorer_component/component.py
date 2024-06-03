@@ -16,10 +16,10 @@ class MonitorerComponentSpec(types.ComponentSpec):
     PARAMETERS = {
         'project_id': ExecutionParameter(type=str),
         'region': ExecutionParameter(type=str),
-        'email': ExecutionParameter(type=str)
+        'email': ExecutionParameter(type=str),
         'default_threshold_value': ExecutionParameter(type=float),
         'monitoring_frequency': ExecutionParameter(type=int),
-        'sample_rate': ExecutionParameter(type=float),
+        'sample_rate': ExecutionParameter(type=float)
     }
     INPUTS = {
         'statistics': ChannelParameter(type=standard_artifacts.ExampleStatistics),
