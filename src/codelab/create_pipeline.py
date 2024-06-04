@@ -9,6 +9,7 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
                      trainer_module_file: str,
                      endpoint_name: str,
                      project_id: str, region: str,
+                     email: str,
                      beam_pipeline_args: Optional[List[str]],
                      ) -> tfx.dsl.Pipeline:
     """
@@ -22,6 +23,7 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
     :param endpoint_name: name of an endpoint the trained model is going to be deployed to
     :param project_id: project id
     :param region: Google Cloud region
+    :param email: email address for monitoring job
     :param beam_pipeline_args: project settings necessary for BigQuery query component
     :return TFX Pipeline
     """
@@ -33,7 +35,8 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
     )
 
     example_gen = tfx.extensions.google_cloud_big_query.BigQueryExampleGen(
-        query=query, output_config=output)
+        query=query, output_config=output
+    )
 
     # compute the statistics
     statistics_gen = tfx.components.StatisticsGen(
@@ -50,7 +53,6 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
         # reference: https://www.tensorflow.org/tfx/guide/transform
     )
 
-
     # train the model with user-provided Python function
     trainer = tfx.components.Trainer(
         module_file=trainer_module_file,
@@ -58,7 +60,8 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
         transform_graph=transformer.outputs['transform_graph'],
         schema=schema_gen.outputs['schema'],
         train_args=tfx.proto.TrainArgs(num_steps=1000),
-        eval_args=tfx.proto.EvalArgs(num_steps=50))
+        eval_args=tfx.proto.EvalArgs(num_steps=50)
+    )
 
     # push the model to model registry
     vertex_serving_spec = {
@@ -85,7 +88,9 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
     monitorer = component.MonitorerComponent(statistics=statistics_gen.outputs['statistics'],
                                              pushed_model=pusher.outputs['pushed_model'],
                                              project_id=project_id,
-                                             region=region)
+                                             region=region,
+                                             email=email
+                                             )
 
     components = [
         example_gen,

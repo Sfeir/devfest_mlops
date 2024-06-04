@@ -9,7 +9,7 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
                      trainer_module_file: str,
                      endpoint_name: str,
                      project_id: str, region: str,
-                     email:str,
+                     email: str,
                      beam_pipeline_args: Optional[List[str]],
                      ) -> tfx.dsl.Pipeline:
     """
@@ -33,10 +33,12 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
         split_config=tfx.proto.SplitConfig(splits=[
             tfx.proto.SplitConfig.Split(name='train', hash_buckets=4),
             tfx.proto.SplitConfig.Split(name='eval', hash_buckets=1)
-        ]))
+        ])
+    )
 
     example_gen = tfx.extensions.google_cloud_big_query.BigQueryExampleGen(
-        query=query, output_config=output)
+        query=query, output_config=output
+    )
 
     # compute the statistics
     statistics_gen = tfx.components.StatisticsGen(examples=example_gen.outputs['examples'])
@@ -48,7 +50,8 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
     transformer = tfx.components.Transform(
         examples=example_gen.outputs['examples'],
         schema=schema_gen.outputs['schema'],
-        module_file=transformer_module_file)
+        module_file=transformer_module_file
+    )
 
     # train the model with user-provided Python function
     trainer = tfx.components.Trainer(
@@ -57,7 +60,8 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
         transform_graph=transformer.outputs['transform_graph'],
         schema=schema_gen.outputs['schema'],
         train_args=tfx.proto.TrainArgs(num_steps=1000),
-        eval_args=tfx.proto.EvalArgs(num_steps=50))
+        eval_args=tfx.proto.EvalArgs(num_steps=50)
+    )
 
     # push the model to model registry
     vertex_serving_spec = {
@@ -85,7 +89,8 @@ def _create_pipeline(pipeline_name: str, pipeline_root: str, query: str,
                                              pushed_model=pusher.outputs['pushed_model'],
                                              project_id=project_id,
                                              region=region,
-                                             email=email)
+                                             email=email
+                                             )
 
     components = [
         example_gen,
