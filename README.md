@@ -67,12 +67,12 @@ We strongly suggest that you use a basic Cloud Shell environment for this lab, a
 
 **/!\ : Due to time constraints, the Docker image part is purely informative, you have the Dockerfile, and the commands to build the image, but the image that we are going to use for this lab has already been built.**
 
-To start :
+To start:
 - `cd devfest_mlops`
 - `PROJECT_ID=par-devfest-sfeir`
 - Build a custom Docker image:
   `docker build -f docker/dockerfile_monitoring.dev . -t europe-west1-docker.pkg.dev/$PROJECT_ID/devfest-2022/tfx_augm:1.15.1`
-- Push it to artefact registry:
+- Push it to the Artefact Registry:
   `docker push europe-west1-docker.pkg.dev/$PROJECT_ID/devfest-2022/tfx_augm:1.15.1`
 
 ### Getting started
@@ -149,9 +149,8 @@ pip install --upgrade "tfx[kfp]<2"
 ```
 
 #### Querying from Cloud Shell
-If we want to specify a signature with the request, we need to use curl. Signature specification in the python library is not currently supported.
-
 Write the request data manually or programmatically to a json file first, using python:
+
 ```
 import json
 data = {
